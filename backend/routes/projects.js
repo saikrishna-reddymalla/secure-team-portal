@@ -1,12 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const projectController = require("../controllers/projectController");
+const authMiddleware = require("../middleware/authMiddleware");
 
-router.get("/", (req, res) => {
-  res.json([{ id: 1, name: "Security Review" }]);
-});
-
-router.post("/", (req, res) => {
-  res.json({ message: "Project created" });
-});
+router.get("/", authMiddleware, projectController.getProjects);
+router.post("/", authMiddleware, projectController.createProject);
 
 module.exports = router;
