@@ -1,10 +1,30 @@
-exports.getProjects = (req, res) => {
-  res.json([
-    { id: 1, name: "Security Review" },
-    { id: 2, name: "Team Dashboard" }
-  ]);
+const projectModel = require("../models/projectModel");
+
+exports.getProjects = async (req, res) => {
+  try {
+    const projects = await projectModel.getAllProjects();
+    return res.json(projects);
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to fetch projects" });
+  }
 };
 
-exports.createProject = (req, res) => {
-  res.json({ message: "Project created" });
+exports.createProject = async (req, res) => {
+  try {
+    const { name, description } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ message: "Project name is required" });
+    }
+
+    const project = await projectModel.createProject(
+      name,
+      description || "",
+      req.user.userId
+    );
+
+    return res.status(201).json(project);
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to create project" });
+  }
 };
