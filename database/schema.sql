@@ -11,7 +11,7 @@ CREATE TABLE projects (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   description TEXT,
-  owner_id INT,
+  owner_id INT REFERENCES users(id) ON DELETE SET NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -19,7 +19,7 @@ CREATE TABLE tasks (
   id SERIAL PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   status VARCHAR(50) DEFAULT 'open',
-  project_id INT,
-  assigned_to INT,
+  project_id INT REFERENCES projects(id) ON DELETE CASCADE,
+  assigned_to INT REFERENCES users(id) ON DELETE SET NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
