@@ -1,12 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const taskController = require("../controllers/taskController");
+const authMiddleware = require("../middleware/authMiddleware);
 
-router.get("/", (req, res) => {
-  res.json([{ id: 1, title: "Fix auth bug" }]);
-});
-
-router.post("/", (req, res) => {
-  res.json({ message: "Task created" });
-});
+router.get("/", authMiddleware, taskController.getTasks);
+router.post("/", authMiddleware, taskController.createTask);
 
 module.exports = router;
